@@ -27,10 +27,10 @@ const initialState: PlayerState = {
   currentLessonIndex: 0,
 }
 
-export const loadCourse = createAsyncThunk('start', async () => {
-  api.get('./courses/1').then((response) => {
-    console.log(response.data)
-  })
+export const loadCourse = createAsyncThunk('player/load', async () => {
+  const { data } = await api.get('/courses/1')
+
+  return data
 })
 
 export const playerSlice = createSlice({
@@ -39,9 +39,6 @@ export const playerSlice = createSlice({
   initialState,
 
   reducers: {
-    start: (state, action: PayloadAction<Course>) => {
-      state.course = action.payload
-    },
     play: (state, action: PayloadAction<[number, number]>) => {
       state.currentModuleIndex = action.payload[0]
       state.currentLessonIndex = action.payload[1]
@@ -65,10 +62,16 @@ export const playerSlice = createSlice({
       }
     },
   },
+
+  extraReducers(builder) {
+    builder.addCase(loadCourse.fulfilled, (state, action) => {
+      state.course = action.payload
+    })
+  },
 })
 
 export const player = playerSlice.reducer
-export const { play, next, start } = playerSlice.actions
+export const { play, next } = playerSlice.actions
 
 export const useCurrentLesson = () => {
   return useAppSelector((state) => {
