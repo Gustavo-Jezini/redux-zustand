@@ -6,18 +6,27 @@ import { Module } from '../components/Module'
 import { useAppSelector } from '../store'
 import { useCurrentLesson } from '../store/slices/player'
 import { useEffect } from 'react'
+import { api } from '../lib/axios'
 
 export function Player() {
   const modules = useAppSelector((state) => {
     // Não desestruturar pois se não vem o slice inteiro
     // Queremos apenas modules
-    return state.player.course.modules
+    return state.player.course?.modules
   })
 
   const { currentLesson } = useCurrentLesson()
 
   useEffect(() => {
-    document.title = currentLesson.title
+    api.get('./courses/1').then((response) => {
+      console.log(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (currentLesson) {
+      document.title = currentLesson?.title
+    }
   }, [currentLesson])
 
   return (
@@ -36,15 +45,16 @@ export function Player() {
           <div className="flex-1">
             <Video />
           </div>
-          <aside className="scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800 absolute bottom-0 right-0 top-0 w-80 divide-y-2 divide-zinc-900 overflow-y-scroll border-l border-zinc-800 bg-zinc-900">
-            {modules.map((module, index) => (
-              <Module
-                key={module.id}
-                moduleIndex={index}
-                title={module.title}
-                amountOfLessons={module.lessons.length}
-              />
-            ))}
+          <aside className="absolute bottom-0 right-0 top-0 w-80 divide-y-2 divide-zinc-900 overflow-y-scroll border-l border-zinc-800 bg-zinc-900 scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
+            {modules &&
+              modules.map((module, index) => (
+                <Module
+                  key={module.id}
+                  moduleIndex={index}
+                  title={module.title}
+                  amountOfLessons={module.lessons.length}
+                />
+              ))}
           </aside>
         </main>
       </div>
