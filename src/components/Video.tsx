@@ -25,6 +25,7 @@ export function Video() {
         width="100%"
         height="100%"
         controls
+        playing
         onEnded={handlePlayNext}
         url={`https://www.youtube.com/watch?v=${lesson.id}`}
       />
