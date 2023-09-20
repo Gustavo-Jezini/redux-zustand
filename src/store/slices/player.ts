@@ -73,6 +73,14 @@ const playerSlice = createSlice({
 
       if (nextLesson) {
         state.currentLessonIndex = nextLessonIndex
+      } else {
+        const nextModuleIndex = state.currentModuleIndex + 1
+        const nextModule = state.course.modules[nextModuleIndex]
+
+        if (nextModule) {
+          state.currentLessonIndex = 0
+          state.currentModuleIndex = nextModuleIndex
+        }
       }
     },
   },
