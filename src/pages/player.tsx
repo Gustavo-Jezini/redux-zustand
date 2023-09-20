@@ -3,12 +3,12 @@ import { MessageCircle } from 'lucide-react'
 import { Header } from '../components/Header'
 import { Video } from '../components/Video'
 import { Module } from '../components/Module'
-import { useAppSelector } from '../store'
-import { useCurrentLesson } from '../store/slices/player'
+import { useAppDispatch, useAppSelector } from '../store'
+import { loadCourse, useCurrentLesson } from '../store/slices/player'
 import { useEffect } from 'react'
-import { api } from '../lib/axios'
 
 export function Player() {
+  const dispatch = useAppDispatch()
   const modules = useAppSelector((state) => {
     // Não desestruturar pois se não vem o slice inteiro
     // Queremos apenas modules
@@ -18,9 +18,7 @@ export function Player() {
   const { currentLesson } = useCurrentLesson()
 
   useEffect(() => {
-    api.get('./courses/1').then((response) => {
-      console.log(response.data)
-    })
+    dispatch(loadCourse())
   }, [])
 
   useEffect(() => {
