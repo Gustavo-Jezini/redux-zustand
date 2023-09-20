@@ -11,6 +11,7 @@ export function Video() {
       ]
     return lesson
   })
+
   return (
     <div className="aspect-video w-full bg-zinc-950">
       <ReactPlayer
