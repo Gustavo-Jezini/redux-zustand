@@ -26,7 +26,7 @@ export interface PlayerState {
 
   play: (moduleAndLessonIndex: [number, number]) => void
   next: () => void
-  load: Promise<void>
+  load: () => Promise<void>
 }
 
 export const useStore = create<PlayerState>((set, get) => {
