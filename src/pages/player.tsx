@@ -3,29 +3,17 @@ import { MessageCircle } from 'lucide-react'
 import { Header } from '../components/Header'
 import { Video } from '../components/Video'
 import { Module } from '../components/Module'
-import { useAppDispatch, useAppSelector } from '../store'
-import { loadCourse, useCurrentLesson } from '../store/slices/player'
 import { useEffect } from 'react'
+import { useStore } from '../zustand-store'
 
 export function Player() {
-  const dispatch = useAppDispatch()
-  const modules = useAppSelector((state) => {
-    // Não desestruturar pois se não vem o slice inteiro
-    // Queremos apenas modules
-    return state.player.course?.modules
-  })
+  const { course, currentModuleIndex, currentLessonIndex, load } = useStore()
 
-  const { currentLesson } = useCurrentLesson()
+  // const { currentLesson } = useCurrentLesson()
 
   useEffect(() => {
-    dispatch(loadCourse())
-  }, [dispatch])
-
-  useEffect(() => {
-    if (currentLesson) {
-      document.title = currentLesson?.title
-    }
-  }, [currentLesson])
+    load() // ZUSTAND
+  }, [load])
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">
@@ -40,19 +28,17 @@ export function Player() {
         </div>
 
         <main className="relative flex overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 pr-80 shadow">
-          <div className="flex-1">
-            <Video />
-          </div>
+          <div className="flex-1">{/* <Video /> */}</div>
           <aside className="absolute bottom-0 right-0 top-0 w-80 divide-y-2 divide-zinc-900 overflow-y-scroll border-l border-zinc-800 bg-zinc-900 scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            {modules &&
-              modules.map((module, index) => (
+            {/* {course?.modules &&
+              course?.modules.map((module, index) => (
                 <Module
                   key={module.id}
                   moduleIndex={index}
                   title={module.title}
                   amountOfLessons={module.lessons.length}
                 />
-              ))}
+              ))} */}
           </aside>
         </main>
       </div>
