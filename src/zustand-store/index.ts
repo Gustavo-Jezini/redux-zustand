@@ -1,16 +1,20 @@
 import { create } from 'zustand'
 
+interface Lesson {
+  id: string
+  title: string
+  duration: string
+}
+
+interface Module {
+  id: number
+  title: string
+  lessons: Lesson[]
+}
+
 interface Course {
   id: number
-  modules: Array<{
-    id: number
-    title: string
-    lessons: Array<{
-      id: string
-      title: string
-      duration: string
-    }>
-  }>
+  modules: Module[]
 }
 
 export interface PlayerState {
@@ -18,6 +22,9 @@ export interface PlayerState {
   currentLessonIndex: number
   currentModuleIndex: number
   isLoading: boolean
+
+  play: (moduleAndLessonIndex: [number, number]) => void
+  next: () => void
 }
 
 export const useStore = create<PlayerState>((set, get) => {
