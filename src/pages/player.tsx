@@ -4,16 +4,27 @@ import { Header } from '../components/Header'
 import { Video } from '../components/Video'
 import { Module } from '../components/Module'
 import { useEffect } from 'react'
-import { useStore } from '../zustand-store'
+import { useCurrentLesson, useStore } from '../zustand-store'
 
 export function Player() {
-  const { course, currentModuleIndex, currentLessonIndex, load } = useStore()
+  const { course, load } = useStore((store) => {
+    return {
+      course: store.course,
+      load: store.load,
+    }
+  })
 
-  // const { currentLesson } = useCurrentLesson()
+  const { currentLesson } = useCurrentLesson()
 
   useEffect(() => {
     load() // ZUSTAND
   }, [load])
+
+  useEffect(() => {
+    if (currentLesson) {
+      document.title = currentLesson.title
+    }
+  }, [currentLesson])
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">
@@ -28,9 +39,11 @@ export function Player() {
         </div>
 
         <main className="relative flex overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 pr-80 shadow">
-          <div className="flex-1">{/* <Video /> */}</div>
+          <div className="flex-1">
+            <Video />
+          </div>
           <aside className="absolute bottom-0 right-0 top-0 w-80 divide-y-2 divide-zinc-900 overflow-y-scroll border-l border-zinc-800 bg-zinc-900 scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            {/* {course?.modules &&
+            {course?.modules &&
               course?.modules.map((module, index) => (
                 <Module
                   key={module.id}
@@ -38,7 +51,7 @@ export function Player() {
                   title={module.title}
                   amountOfLessons={module.lessons.length}
                 />
-              ))} */}
+              ))}
           </aside>
         </main>
       </div>

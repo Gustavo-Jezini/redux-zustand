@@ -3,7 +3,12 @@ import { Loader } from 'lucide-react'
 import { useCurrentLesson, useStore } from '../zustand-store'
 
 export function Video() {
-  const { isLoading, next } = useStore()
+  const { isLoading, next } = useStore((store) => {
+    return {
+      isLoading: store.isLoading,
+      next: store.next,
+    }
+  })
 
   const { currentLesson } = useCurrentLesson()
 
