@@ -22,7 +22,8 @@
     "react-dom": "^18.2.0",
     "react-player": "^2.13.0",
     "react-redux": "^8.1.2",
-    "tailwind-scrollbar": "^3.0.5"
+    "tailwind-scrollbar": "^3.0.5",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
