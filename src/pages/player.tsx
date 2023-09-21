@@ -19,7 +19,7 @@ export function Player() {
 
   useEffect(() => {
     dispatch(loadCourse())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (currentLesson) {
